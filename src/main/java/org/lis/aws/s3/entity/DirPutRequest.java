@@ -6,9 +6,9 @@ public class DirPutRequest
 {
 	private static final String INVALID_FORMAT = "Invalid Arguments. Correct format : PUT -C <corePoolSize> -M <maxPoolSize> -T <keepAliveSeconds> -A <awsAccessKey> -S <awsSecretKey> -B <bucket> -D <dirPath> -L [logMode]";
 	
-	private Integer corePoolSize;
-	private Integer maxPoolSize;
-	private Integer keepAliveSecs;
+	private Integer corePoolSize = 1;
+	private Integer maxPoolSize = 1;
+	private Integer keepAliveSecs = 10000;
 	private String awsAccessKey;
 	private String awsSecretKey;
 	private String bucket;
