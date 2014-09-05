@@ -12,6 +12,7 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.DeleteObjectsRequest;
 import com.amazonaws.services.s3.model.GetObjectRequest;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.DeleteObjectsRequest.KeyVersion;
 import com.amazonaws.services.s3.model.S3Object;
@@ -38,7 +39,14 @@ public class AWSS3Helper
 	public void put(File file, String location)
 	{
 		PutObjectRequest putRequest = new PutObjectRequest(bucket, location, file);
+		putRequest.setMetadata(updateMetadata(new ObjectMetadata()));
 		s3Client.putObject(putRequest);
+	}
+	
+	private ObjectMetadata updateMetadata(ObjectMetadata objMetadata)
+	{
+		objMetadata.setCacheControl("public, max-age=31536000, must-revalidate");
+		return objMetadata;
 	}
 	
 	public void delete(String location)
