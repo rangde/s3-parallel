@@ -1,5 +1,7 @@
 ## s3-parallel
 ===========
+[![Build Status](https://travis-ci.org/tj---/s3-parallel.svg?branch=master)](https://travis-ci.org/tj---/s3-parallel)
+
 s3 client that can parallel process tasks (PUT/GET/DELETE)
 
 Support for PUT is now available.
