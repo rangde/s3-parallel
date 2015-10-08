@@ -8,16 +8,13 @@ import java.util.List;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.DeleteObjectRequest;
-import com.amazonaws.services.s3.model.DeleteObjectsRequest;
-import com.amazonaws.services.s3.model.GetObjectRequest;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.*;
 import com.amazonaws.services.s3.model.DeleteObjectsRequest.KeyVersion;
-import com.amazonaws.services.s3.model.S3Object;
 
 public class AWSS3Helper
 {
+    private static final String[] NO_CACHE_LIST = {"index.htm"};
+
 	private String bucket = null;
 	protected AmazonS3Client s3Client = null;
 
@@ -38,7 +35,13 @@ public class AWSS3Helper
 	public void put(File file, String location)
 	{
 		PutObjectRequest putRequest = new PutObjectRequest(bucket, location, file);
-		putRequest.setMetadata(updateMetadata(new ObjectMetadata()));
+        for(String nocache : NO_CACHE_LIST)
+        {
+            if(!location.contains(nocache))
+            {
+                putRequest.setMetadata(updateMetadata(new ObjectMetadata()));
+            }
+        }
 		s3Client.putObject(putRequest);
 	}
 
@@ -64,5 +67,23 @@ public class AWSS3Helper
 		}
 		delRequest.setKeys(keys);
 		s3Client.deleteObjects(delRequest);
+	}
+
+	public ObjectListing listAll(String bucket)
+	{
+		ListObjectsRequest listRequest = new ListObjectsRequest();
+		listRequest.setBucketName(bucket);
+		return s3Client.listObjects(listRequest);
+	}
+
+	public void deleteAllFromBucket(String bucket)
+	{
+		ObjectListing listing = listAll(bucket);
+		List<String> locations = new ArrayList<String>();
+		for(S3ObjectSummary summary: listing.getObjectSummaries())
+		{
+			locations.add(summary.getKey());
+		}
+		delete(locations);
 	}
 }

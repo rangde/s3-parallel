@@ -12,15 +12,15 @@ public class Processor extends AuditAware
 {
 	private ExecutorService executorService;
 	private AWSS3Helper awsS3Helper;
-	
+
 	public Processor(int corePoolSize, int maxPoolSize, int keepAliveSecs, AWSS3Helper awsS3Helper)
 	{
 		executorService  = new ThreadPoolExecutor(corePoolSize, maxPoolSize, keepAliveSecs, TimeUnit.SECONDS,
 			new LinkedBlockingQueue<Runnable>());
 		this.awsS3Helper = awsS3Helper;
 	}
-	
-	public void submiPutTask(final Source source)
+
+	public void submitPutTask(final Source source)
 	{
 		executorService.execute(new Runnable()
 		{
@@ -39,7 +39,27 @@ public class Processor extends AuditAware
 			}
 		});
 	}
-	
+
+	public void submitDeleteAllTask(final String bucket)
+	{
+		executorService.execute(new Runnable()
+		{
+			public void run()
+			{
+				try
+				{
+					auditUtil.log(String.format("Attempting to Delete files from bucket [%s]", bucket));
+                    awsS3Helper.deleteAllFromBucket(bucket);
+                    auditUtil.log(String.format("SUCCESSFULLY deleted ALL from the bucket [%s]", bucket));
+				}
+				catch(Exception e)
+				{
+                    auditUtil.log(String.format("FAILED to deleted ALL from the bucket [%s]", bucket));
+				}
+			}
+		});
+	}
+
 	public void waitForCompletion() throws InterruptedException
 	{
 		System.out.println("Waiting for all Tasks to complete.");
