@@ -1,0 +1,29 @@
+group 'org.lis'
+version '1.1.1'
+
+apply plugin: 'java'
+apply plugin: 'eclipse-wtp'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'commons-logging:commons-logging:1.2'
+    compile 'commons-codec:commons-codec:1.10'
+    compile 'org.apache.httpcomponents:httpclient:4.5.2'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.8.1'
+    compile 'com.amazonaws:aws-java-sdk-s3:1.11.20'
+}
+
+task fatJar(type: Jar) {
+    from files(sourceSets.main.output.classesDir)
+    from configurations.runtime.asFileTree.files.collect { zipTree(it) }
+
+    manifest {
+        attributes 'Main-Class': 'org.lis.aws.s3.Tool'
+    }
+}
+
+build.dependsOn(fatJar)
+
