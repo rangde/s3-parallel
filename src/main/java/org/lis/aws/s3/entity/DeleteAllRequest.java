@@ -2,11 +2,12 @@ package org.lis.aws.s3.entity;
 
 public class DeleteAllRequest
 {
-	private static final String INVALID_FORMAT = "Invalid Arguments. Correct format : DELETE_ALL -A <awsAccessKey> -S <awsSecretKey> -B <bucket> -L [logMode]";
+	private static final String INVALID_FORMAT = "Invalid Arguments. Correct format : DELETE_ALL -A <awsAccessKey> -S <awsSecretKey> -B <bucket> [-R <region>] -L [logMode]";
 
 	private String awsAccessKey;
 	private String awsSecretKey;
 	private String bucket;
+	private String awsRegion;
 	private LogMode logMode = LogMode.CONSOLE;
 
 	public DeleteAllRequest(String args[])
@@ -26,6 +27,10 @@ public class DeleteAllRequest
 				else if("-B".equals(args[index]) && index + 1 < args.length)
 				{
 					bucket = args[index + 1];
+				}
+				else if("-R".equals(args[index]) && index + 1 < args.length)
+				{
+					awsRegion = args[index + 1];
 				}
 				else if("-L".equals(args[index]) && index + 1 < args.length)
 				{
@@ -58,5 +63,9 @@ public class DeleteAllRequest
 	}
 	public LogMode getLogMode() {
 		return logMode;
+	}
+
+	public String getAwsRegion() {
+		return awsRegion;
 	}
 }

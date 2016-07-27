@@ -16,7 +16,8 @@ public class S3DirPut implements S3Command
 			DirPutRequest dirPutRequest = new DirPutRequest(args);
 
 			// Prepare AWS Helper
-			AWSS3Helper awsS3Helper = new AWSS3Helper(dirPutRequest.getAwsAccessKey(), dirPutRequest.getAwsSecretKey(), dirPutRequest.getBucket());
+			AWSS3Helper awsS3Helper = new AWSS3Helper(dirPutRequest.getAwsAccessKey(), dirPutRequest.getAwsSecretKey(),
+					dirPutRequest.getBucket(), dirPutRequest.getAwsRegion());
 			// Prepare Audit Loggers
 			AuditUtil procAuditor = AuditUtil.getAuditUtil(dirPutRequest.getLogMode(), Processor.class);
 			AuditUtil trackAuditor = AuditUtil.getAuditUtil(dirPutRequest.getLogMode(), Tracker.class);

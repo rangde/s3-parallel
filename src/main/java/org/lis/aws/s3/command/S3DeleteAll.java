@@ -12,7 +12,8 @@ public class S3DeleteAll implements S3Command
             DeleteAllRequest deleteAllRequest = new DeleteAllRequest(args);
 
             // Prepare AWS Helper
-            AWSS3Helper awsS3Helper = new AWSS3Helper(deleteAllRequest.getAwsAccessKey(), deleteAllRequest.getAwsSecretKey(), deleteAllRequest.getBucket());
+            AWSS3Helper awsS3Helper = new AWSS3Helper(deleteAllRequest.getAwsAccessKey(), deleteAllRequest.getAwsSecretKey(),
+                    deleteAllRequest.getBucket(), deleteAllRequest.getAwsRegion());
             // Prepare Audit Loggers
             AuditUtil procAuditor = AuditUtil.getAuditUtil(deleteAllRequest.getLogMode(), Processor.class);
             AuditUtil trackAuditor = AuditUtil.getAuditUtil(deleteAllRequest.getLogMode(), Tracker.class);

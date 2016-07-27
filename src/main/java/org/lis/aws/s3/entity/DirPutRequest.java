@@ -4,7 +4,7 @@ import com.amazonaws.util.StringUtils;
 
 public class DirPutRequest
 {
-	private static final String INVALID_FORMAT = "Invalid Arguments. Correct format : PUT -C <corePoolSize> -M <maxPoolSize> -T <keepAliveSeconds> -A <awsAccessKey> -S <awsSecretKey> -B <bucket> -D <dirPath> -L [logMode]";
+	private static final String INVALID_FORMAT = "Invalid Arguments. Correct format : PUT -C <corePoolSize> -M <maxPoolSize> -T <keepAliveSeconds> -A <awsAccessKey> -S <awsSecretKey> -B <bucket> [-R <region>] -D <dirPath> -L [logMode]";
 	
 	private Integer corePoolSize = 1;
 	private Integer maxPoolSize = 1;
@@ -12,6 +12,7 @@ public class DirPutRequest
 	private String awsAccessKey;
 	private String awsSecretKey;
 	private String bucket;
+	private String awsRegion;
 	private String dirPath;
 	private LogMode logMode = LogMode.CONSOLE;
 	
@@ -44,6 +45,10 @@ public class DirPutRequest
 				else if("-B".equals(args[index]) && index + 1 < args.length)
 				{
 					bucket = args[index + 1];
+				}
+				else if("-R".equals(args[index]) && index + 1 < args.length)
+				{
+					awsRegion = args[index + 1];
 				}
 				else if("-D".equals(args[index]) && index + 1 < args.length)
 				{
@@ -110,5 +115,9 @@ public class DirPutRequest
 	}
 	public LogMode getLogMode() {
 		return logMode;
+	}
+
+	public String getAwsRegion() {
+		return awsRegion;
 	}
 }

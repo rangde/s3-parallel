@@ -1,15 +1,16 @@
 package org.lis.aws.s3.helper;
 
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.regions.RegionUtils;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.*;
+import com.amazonaws.services.s3.model.DeleteObjectsRequest.KeyVersion;
+
 import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.*;
-import com.amazonaws.services.s3.model.DeleteObjectsRequest.KeyVersion;
 
 public class AWSS3Helper
 {
@@ -18,11 +19,12 @@ public class AWSS3Helper
 	private String bucket = null;
 	protected AmazonS3Client s3Client = null;
 
-	public AWSS3Helper(String awsAccessKey, String awsSecretKey, String bucket)
+	public AWSS3Helper(String awsAccessKey, String awsSecretKey, String bucket, String awsRegion)
 	{
 		this.bucket = bucket;
 		AWSCredentials awsCredentials = new BasicAWSCredentials(awsAccessKey, awsSecretKey);
 		s3Client = new AmazonS3Client(awsCredentials);
+		s3Client.setRegion(RegionUtils.getRegion(awsRegion));
 	}
 
 	public InputStream get(String location)
