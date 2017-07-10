@@ -12,7 +12,6 @@ public class Tracker extends AuditAware
 	public void add(Source source)
 	{
 		requestQueue.add(source);
-		auditUtil.log(String.format("Added %s [%s] to the requestQueue", source.getFileName(), source.getAbsolutePath()));
 	}
 	
 	public Source get()

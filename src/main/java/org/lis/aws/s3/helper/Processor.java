@@ -28,7 +28,6 @@ public class Processor extends AuditAware
 			{
 				try
 				{
-					auditUtil.log(String.format("Attempting to transfer %s [%s] to the bucket", source.getFileName(), source.getKeyPath()));
 					awsS3Helper.put(new File(source.getAbsolutePath()), source.getKeyPath());
 					auditUtil.log(String.format("SUCCESSFULLY added %s [%s] to the bucket", source.getFileName(), source.getKeyPath()));
 				}
